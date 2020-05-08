@@ -19,16 +19,19 @@ def write_viewers_to_csv(page_source):
 options = Options()
 options.headless = True
 browser = webdriver.Firefox(options=options)
-browser.get('https://www.youtube.com/watch?v=mRe-514tGMg')
-time.sleep(10)
+try:
+    browser.get('https://www.youtube.com/watch?v=mRe-514tGMg')
+    time.sleep(10)
 
-ActionChains(browser).send_keys(Keys.SPACE).send_keys("f").perform()
-time.sleep(10)
+    ActionChains(browser).send_keys(Keys.SPACE).send_keys("f").perform()
+    time.sleep(10)
 
-currentTime = time.strftime("%Y%m%d-%H%M")
-browser.save_screenshot(f"./screenshots/screenshot_{currentTime}.png")
-#write_viewers_to_csv(browser.page_source)
-time.sleep(5)
+    currentTime = time.strftime("%Y%m%d-%H%M")
+    browser.save_screenshot(f"./screenshots/screenshot_{currentTime}.png")
+    #write_viewers_to_csv(browser.page_source)
+    time.sleep(5)
 
-browser.close()
-print("done")
+    print("done")
+finally:
+    browser.quit()
+
