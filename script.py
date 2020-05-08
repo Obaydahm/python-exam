@@ -9,10 +9,11 @@ from selenium.webdriver.common.keys import Keys
 def write_viewers_to_csv(page_source):
     soup = bs4.BeautifulSoup(page_source, 'html.parser')
     views = soup.find("span", {"class":"view-count"})
+    views_splitted = views.getText().split(" ")
 
     with open("./views.csv", 'a+', newline='') as file:
         csv_writer = writer(file)
-        csv_writer.writerow([time.strftime("%Y-%m-%d %H:%M"), views.getText().split(" ")[0]])
+        csv_writer.writerow([time.strftime("%Y-%m-%d %H:%M"), views_splitted[0]])
 
 options = Options()
 options.headless = True
