@@ -23,8 +23,8 @@ try:
     browser.get('https://www.youtube.com/watch?v=mRe-514tGMg')
     time.sleep(5)
 
-    #ActionChains(browser).send_keys(Keys.SPACE)
-    #time.sleep(10)
+    ActionChains(browser).send_keys(Keys.SPACE)
+    time.sleep(10)
 
     browser.find_element_by_class_name("ytp-fullscreen-button").click()
     time.sleep(10)
