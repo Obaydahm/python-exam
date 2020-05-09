@@ -15,12 +15,16 @@ def write_viewers_to_csv(views):
 
 options = Options()
 options.headless = True
-browser = webdriver.Firefox(options=options)
+browser = webdriver.Chrome()
+#browser = webdriver.Firefox(options=options)
 try:
     browser.get('https://www.youtube.com/watch?v=mRe-514tGMg')
     time.sleep(10)
 
-    ActionChains(browser).send_keys(Keys.SPACE).send_keys("f").perform()
+    ActionChains(browser).send_keys(Keys.SPACE)
+    time.sleep(10)
+
+    browser.find_element_by_class_name("ytp-fullscreen-button").click()
     time.sleep(10)
 
     currentTime = time.strftime("%Y%m%d-%H%M")
@@ -28,9 +32,6 @@ try:
     views = browser.find_element_by_class_name("view-count")
 
     write_viewers_to_csv(views.text)
-    time.sleep(5)
-    
-    print("done")
 finally:
     browser.quit()
     print("driver disposed")
