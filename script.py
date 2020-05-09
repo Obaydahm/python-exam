@@ -13,16 +13,18 @@ def write_viewers_to_csv(views):
         csv_writer = writer(file)
         csv_writer.writerow([time.strftime("%Y-%m-%d %H:%M"), views_splitted[0]])
 
+#chrome_options = Options()
+#chrome_options.add_argument('--headless')
+#browser = webdriver.Chrome(options=chrome_options)
 options = Options()
 options.headless = True
-browser = webdriver.Chrome()
-#browser = webdriver.Firefox(options=options)
+browser = webdriver.Firefox(options=options)
 try:
     browser.get('https://www.youtube.com/watch?v=mRe-514tGMg')
-    time.sleep(10)
+    time.sleep(5)
 
-    ActionChains(browser).send_keys(Keys.SPACE)
-    time.sleep(10)
+    #ActionChains(browser).send_keys(Keys.SPACE)
+    #time.sleep(10)
 
     browser.find_element_by_class_name("ytp-fullscreen-button").click()
     time.sleep(10)
