@@ -21,6 +21,7 @@ def insert_into_database(database):
 
     cursor, cnx = make_SQL_cursor(database)
 
+    # make a table named "analysis"
     query = ("INSERT INTO analysis VALUES (null, %s, %s, %s)")
 
     cursor.execute(query, (a, b, c))
