@@ -15,14 +15,14 @@ def take3Variables():
     return 43, 22, 5
 
 
-def insert_into_database(database):
+def insert_into_database():
     # this below could be any method, but it's these variables that are inserted into the database
     a, b, c = take3Variables()
 
-    cursor, cnx = make_SQL_cursor(database)
+    cursor, cnx = make_SQL_cursor('analysis')  # database
 
     # make a table named "analysis"
-    query = ("INSERT INTO analysis VALUES (null, %s, %s, %s)")
+    query = ("INSERT INTO info VALUES (null, %s, %s, %s)")  # table
 
     cursor.execute(query, (a, b, c))
 
@@ -32,3 +32,7 @@ def insert_into_database(database):
     cnx.close()
 
     return 'færdig'
+
+
+if __name__ == "__main__":
+    insert_into_database()
