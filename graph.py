@@ -9,3 +9,4 @@ def make_SQL_cursor(database):
                                   use_pure=True)
     cursor = cnx.cursor()
     return cursor, cnx
+
