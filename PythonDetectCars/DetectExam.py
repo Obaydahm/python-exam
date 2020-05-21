@@ -1,18 +1,21 @@
 # Import used libraries
+import os
 import cv2
 import imutils
 import numpy as np
 from imutils.object_detection import non_max_suppression
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # Initializing the HOG person detector from OpenCV used for our pedestrian detection
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 # Open video file for detection
-cap = cv2.VideoCapture('car3.mp4')
+
+cap = cv2.VideoCapture(f'{dir_path}/car3.mp4')
 
 # Trained XML classifiers describes some features of cars we want detect
-car_cascade = cv2.CascadeClassifier('cars6.xml')
+car_cascade = cv2.CascadeClassifier(f'{dir_path}/cars6.xml')
 
 # Image size we resize our vidoe frames
 image_width = 1000
@@ -33,7 +36,7 @@ gray_prev = cv2.cvtColor(frame_prev, cv2.COLOR_BGR2GRAY)
 print("size:", size)
 
 # Specify output video name and frames per second and open for output
-pathOut = 'cardet.mp4'
+pathOut = f'{dir_path}/cardet.mp4'
 fps = 30.0
 out = cv2.VideoWriter(pathOut, cv2.VideoWriter_fourcc(*'DIVX'), fps, size)
 
