@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+from datetime import datetime
 
 
 def make_SQL_cursor(database):
@@ -16,28 +17,16 @@ def make_SQL_cursor(database):
     return cursor, cnx
 
 
-def make_plot():
-    aList = retrieve_return()
+def insert_into_database(database, table, a, b, c):
+    cursor, cnx = make_SQL_cursor(database)
 
-    # bList = np.array(aList)
+    #localtime = time.asctime( time.localtime(time.time()) )
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
 
-    # plt.bar
+    query = ("INSERT INTO " + table + " VALUES (null, %s, %s, %s, %s)")
 
-
-def take3Variables():
-    return 12, 98, 27
-
-
-def insert_into_database():
-    # this below could be any method, but it's these variables that are inserted into the database
-    a, b, c = take3Variables()
-
-    cursor, cnx = make_SQL_cursor('analysis')  # database
-
-    # make a table named "analysis"
-    query = ("INSERT INTO info VALUES (null, %s, %s, %s)")  # table
-
-    cursor.execute(query, (a, b, c))
+    cursor.execute(query, (a, b, c, current_time))
 
     cnx.commit()
 
@@ -45,42 +34,6 @@ def insert_into_database():
     cnx.close()
 
     return 'færdig'
-
-
-def retrieve_from_database():
-    cursor, cnx = make_SQL_cursor('analysis')
-
-    query = ("SELECT a, b, c FROM analysis.info")
-
-    cursor.execute(query)
-
-    # for a in cursor:
-    #    print("{}, {}, {} ".format(a, b, c))
-
-    for (a, b, c) in cursor:
-        print("{}, {}, {} ".format(a, b, c))
-
-    cursor.close()
-    cnx.close()
-
-
-def retrieve_return_old():  # this works
-    cursor, cnx = make_SQL_cursor('analysis')
-
-    query = ("SELECT a FROM analysis.info")
-    # query = ("SELECT a, b, c FROM analysis.info")
-
-    cursor.execute(query)
-
-    aList = [value for value in cursor]
-    # bList = aList[0, 0:]
-    # bList = np.array(aList)
-    # cList = bList[:, :1].tolist()
-
-    cursor.close()
-    cnx.close()
-
-    return aList  # cList
 
 
 def retrieve_return(database, table):  # this works
@@ -111,13 +64,6 @@ def retrieve_return(database, table):  # this works
     cList = list(map(int, cList))
 
     return aList, bList, cList
-
-
-def make_graph(database, table):
-    data_list = retrieve_return(database, table)
-    id_list = retrieve_return_id(database, table)
-
-    plt.bar(id_list, data_list)
 
 
 def retrieve_return_id(database, table):  # this works
@@ -161,9 +107,9 @@ def retrieve_return_time(database, table):  # this works
 
 
 def make_graph(database, table):
-    data_list1, data_list2, data_list3 = retrieve_return('analysis', 'info')
-    id_list = retrieve_return_id('analysis', 'info')
-    time_list = retrieve_return_time('analysis', 'info')
+    data_list1, data_list2, data_list3 = retrieve_return(database, table)
+    id_list = retrieve_return_id(database, table)
+    time_list = retrieve_return_time(database, table)
 
     f, ax = plt.subplots()
 
@@ -176,6 +122,57 @@ def make_graph(database, table):
     ax.set_xticklabels(time_list)
 
     plt.show()
+
+
+##########################################################
+######### Functions below aren't used ###########
+##########################################################
+
+def take3Variables():
+    return 12, 98, 27
+
+
+def retrieve_from_database():
+    cursor, cnx = make_SQL_cursor('analysis')
+
+    query = ("SELECT a, b, c FROM analysis.info")
+
+    cursor.execute(query)
+
+    # for a in cursor:
+    #    print("{}, {}, {} ".format(a, b, c))
+
+    for (a, b, c) in cursor:
+        print("{}, {}, {} ".format(a, b, c))
+
+    cursor.close()
+    cnx.close()
+
+
+def retrieve_return_old():  # this works
+    cursor, cnx = make_SQL_cursor('analysis')
+
+    query = ("SELECT a FROM analysis.info")
+    # query = ("SELECT a, b, c FROM analysis.info")
+
+    cursor.execute(query)
+
+    aList = [value for value in cursor]
+    # bList = aList[0, 0:]
+    # bList = np.array(aList)
+    # cList = bList[:, :1].tolist()
+
+    cursor.close()
+    cnx.close()
+
+    return aList  # cList
+
+
+def make_graph(database, table):
+    data_list = retrieve_return(database, table)
+    id_list = retrieve_return_id(database, table)
+
+    plt.bar(id_list, data_list)
 
 
 def retrieve_specific_from_database():
