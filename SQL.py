@@ -125,7 +125,7 @@ def make_graph(database, table):
 
 
 ##########################################################
-######### Functions below aren't used ###########
+############ Functions below aren't used ################
 ##########################################################
 
 def take3Variables():
