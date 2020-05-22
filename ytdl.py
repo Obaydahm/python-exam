@@ -6,10 +6,11 @@ import time
 import multiprocessing
 
 
-def download(filename, url):
+def download():
     cmd = 'streamlink --hls-live-restart -o {} {} best'.format(
-        filename, url)
-    os.system(cmd)
+        'cars.mp4', 'https://www.youtube.com/watch?v=1EiC9bvVGnk')
+    os.system('timeout 10s ' + cmd)
+    print('timeout 10s ' + cmd)
 
 
 def timer(seconds):
@@ -18,9 +19,7 @@ def timer(seconds):
 
 
 if __name__ == '__main__':
-    url = sys.argv[1]
-    filename = sys.argv[2]
-    download(filename, url)
+    download()
    # p = multiprocessing.Process(
     #    target=download, name="download", args=(filename, url))
     # p.start()
