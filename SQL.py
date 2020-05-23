@@ -31,6 +31,7 @@ def insert_detected_into_database():
     
     cursor.close()
     cnx.close()
+    print("inserted")
 
 def get_detected():
     cursor, cnx = make_SQL_cursor("pyexam")
@@ -39,19 +40,19 @@ def get_detected():
     return res
 
 def detected_to_bar_chart():
+    print("plot")
     detected = get_detected()
     df = pd.DataFrame(detected, columns=["frames", "moving_obj", "cars", "pedestrians"])
     
-    width = 0.20
     frames = df.iloc[:,0]
     frames_indices = np.arange(len(frames))
     moving_obj = df['moving_obj'].values.tolist()
     cars = df['cars'].values.tolist()
     pedestrians = df['pedestrians'].values.tolist()
 
-    plt.bar(frames_indices - width, moving_obj, width=width, label="Moving objects")
-    plt.bar(frames_indices, cars, width=width, label="Cars")
-    plt.bar(frames_indices + width, pedestrians, width=width, label="Pedestrians")
+    plt.plot(frames, moving_obj, "-b", label="Moving objects")
+    plt.plot(frames, cars, "-r", label="Cars")
+    plt.plot(frames, pedestrians, "-g", label="Pedestrians")
 
     plt.xticks(ticks=frames_indices, labels=frames, rotation="vertical")
     plt.legend()

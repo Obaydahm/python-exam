@@ -5,13 +5,14 @@ import numpy as np
 from imutils.object_detection import non_max_suppression
 import csv
 import os
+import ytdl
 
 # Initializing the HOG person detector from OpenCV used for our pedestrian detection
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 # Download livestream and save as 'cars.mp4'
-os.system('python ytdl.py')
+ytdl.download()
 
 # Open video file for detection
 cap = cv2.VideoCapture('cars.mp4')
