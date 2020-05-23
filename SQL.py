@@ -16,6 +16,53 @@ def make_SQL_cursor(database):
     cursor = cnx.cursor()
     return cursor, cnx
 
+def insert_detected_into_database():
+    cursor, cnx = make_SQL_cursor("pyexam")
+    csv = pd.read_csv("./detected.csv")
+    df = [tuple(int(col) for col in row) for row in csv.to_numpy()]
+
+    #Tømmer tabellen hver gang, så vi ikke får for meget data med når vi plotter. Dette er jo kun et proof of concept.
+    cursor.execute("TRUNCATE TABLE detected")
+
+    query = "INSERT INTO detected (frame, moving_obj, cars, pedestrians) VALUES (%s,%s,%s,%s)"
+    cursor.executemany(query, df)
+
+    cnx.commit()
+    
+    cursor.close()
+    cnx.close()
+
+def get_detected():
+    cursor, cnx = make_SQL_cursor("pyexam")
+    cursor.execute("SELECT * FROM detected")
+    res = cursor.fetchall()
+    return res
+
+def detected_to_bar_chart():
+    detected = get_detected()
+    df = pd.DataFrame(detected, columns=["frames", "moving_obj", "cars", "pedestrians"])
+    
+    width = 0.20
+    frames = df.iloc[:,0]
+    frames_indices = np.arange(len(frames))
+    moving_obj = df['moving_obj'].values.tolist()
+    cars = df['cars'].values.tolist()
+    pedestrians = df['pedestrians'].values.tolist()
+
+    plt.bar(frames_indices - width, moving_obj, width=width, label="Moving objects")
+    plt.bar(frames_indices, cars, width=width, label="Cars")
+    plt.bar(frames_indices + width, pedestrians, width=width, label="Pedestrians")
+
+    plt.xticks(ticks=frames_indices, labels=frames, rotation="vertical")
+    plt.legend()
+    plt.title("Detected cars and pedestrains")
+    plt.xlabel("Frames")
+    plt.ylabel("Occourrences")
+
+    plt.tight_layout()
+    plt.savefig("./static/barchart.png")
+    plt.show()
+
 
 def insert_into_database(database, table, a, b, c):
     cursor, cnx = make_SQL_cursor(database)
@@ -190,8 +237,10 @@ def retrieve_specific_from_database():
 
 
 if __name__ == "__main__":
+    #insert_detected_into_database()
+    detected_to_bar_chart()
     # insert_into_database()
     # insert_into_database(sys.argv[1:])  # method you run from bash
-    retrieve_from_database()
+    #retrieve_from_database()
     # retrieve_specific_from_database()
   # retrieve_return()
